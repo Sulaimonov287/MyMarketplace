@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина — Avero Market</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #242139;
+            background:
+                radial-gradient(circle at 10% 10%, #6846ff1f, transparent 35%),
+                #f6f7fb;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button, input, textarea {
+            font: inherit;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 20px 6%;
+            background: #ffffffdb;
+            border-bottom: 1px solid #e9e5f2;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: #7653ef;
+        }
+
+        .navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 17px;
+            border: none;
+            border-radius: 13px;
+            background: #eee8ff;
+            color: #6846d7;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #e4daff;
+        }
+
+        .page {
+            width: min(1200px, 90%);
+            margin: 40px auto 70px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 36px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            margin-bottom: 30px;
+            color: #8b8999;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .message {
+            margin-bottom: 18px;
+            padding: 16px;
+            border-radius: 14px;
+            background: #eee8ff;
+            color: #6541bc;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            align-items: start;
+            gap: 24px;
+        }
+
+        .items {
+            display: grid;
+            gap: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            padding: 22px;
+            border: 1px solid #ece9f3;
+            border-radius: 23px;
+            background: white;
+            box-shadow: 0 10px 30px #231f4b08;
+        }
+
+        .product-image {
+            flex-shrink: 0;
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            border-radius: 16px;
+            background: #f2eff9;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .placeholder {
+            display: grid;
+            place-items: center;
+            height: 100%;
+            font-size: 35px;
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .product-info h2 {
+            margin-bottom: 9px;
+            font-size: 17px;
+            overflow-wrap: anywhere;
+        }
+
+        .details {
+            color: #8b8999;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .remove-button {
+            margin-top: 12px;
+            padding: 8px 11px;
+            border: none;
+            border-radius: 9px;
+            background: #fff0f4;
+            color: #c43a65;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .remove-button:hover {
+            background: #ffe1e9;
+        }
+
+        .item-total {
+            font-size: 20px;
+            font-weight: 800;
+            overflow-wrap: anywhere;
+        }
+
+        .item-total span {
+            display: block;
+            margin-top: 5px;
+            color: #9995a6;
+            font-size: 11px;
+            font-weight: 400;
+        }
+
+        .checkout {
+            padding: 27px;
+            border: 1px solid #ece9f3;
+            border-radius: 25px;
+            background: white;
+            box-shadow: 0 15px 40px #231f4b08;
+        }
+
+        .checkout h2 {
+            margin-bottom: 10px;
+            font-size: 23px;
+        }
+
+        .checkout p {
+            margin-bottom: 23px;
+            color: #8b8999;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .field {
+            margin-bottom: 17px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #655e79;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .field input,
+        .field textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #e7e1f2;
+            border-radius: 12px;
+            background: #faf8ff;
+            color: #242139;
+            font-size: 13px;
+        }
+
+        .field textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+            outline: 2px solid #b7a5ff;
+            background: white;
+        }
+
+        .total {
+            margin: 23px 0;
+            padding-top: 20px;
+            border-top: 1px solid #eeeaf5;
+        }
+
+        .total small {
+            color: #8b8999;
+        }
+
+        .total strong {
+            display: block;
+            margin-top: 10px;
+            font-size: 28px;
+            overflow-wrap: anywhere;
+        }
+
+        .order-button {
+            width: 100%;
+            min-height: 50px;
+            background: linear-gradient(135deg, #7653ef, #9865ff);
+            color: white;
+            font-size: 14px;
+            box-shadow: 0 8px 20px #7653ef25;
+        }
+
+        .order-button:hover {
+            background: #6846d7;
+        }
+
+        .empty {
+            padding: 65px 25px;
+            border-radius: 25px;
+            background: white;
+            text-align: center;
+        }
+
+        .empty h2 {
+            margin-bottom: 15px;
+        }
+
+        .empty p {
+            margin-bottom: 25px;
+            color: #8b8999;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 18px 5%;
+            }
+
+            h1 {
+                font-size: 29px;
+            }
+
+            .cart-item {
+                padding: 16px;
+                gap: 14px;
+            }
+
+            .product-image {
+                width: 75px;
+                height: 75px;
+            }
+
+            .product-info h2 {
+                font-size: 14px;
+            }
+
+            .item-total {
+                width: 100%;
+                padding-top: 13px;
+                border-top: 1px solid #eeeaf5;
+            }
+
+            .checkout {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="{% url 'home' %}" class="logo">
+            Avero <span>Market</span>
+        </a>
+
+        <nav class="navigation">
+            <a href="{% url 'home' %}#products" class="button">
+                ← К товарам
+            </a>
+
+            <a href="{% url 'orders' %}" class="button">
+                Мои заказы
+            </a>
+        </nav>
+    </header>
+
+    <main class="page">
+
+        {% for message in messages %}
+            <div class="message" role="status">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <h1>Моя корзина 🛒</h1>
+        <p class="subtitle">
+            Проверь товары и заполни данные для заказа.
+        </p>
+
+        {% if items %}
+            <div class="layout">
+
+                <section class="items" aria-label="Товары в корзине">
+                    {% for item in items %}
+                        <article class="cart-item">
+
+                            <div class="product-image">
+                                {% if item.product.image %}
+                                    <img
+                                        src="{{ item.product.image.url }}"
+                                        alt="{{ item.product.name }}"
+                                    >
+                                {% else %}
+                                    <div class="placeholder">📦</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="product-info">
+                                <h2>{{ item.product.name }}</h2>
+
+                                <p class="details">
+                                    Цена: {{ item.product.price|floatformat:2 }}
+                                    сомони<br>
+                                    Количество: {{ item.quantity }} шт.
+                                </p>
+
+                                <form
+                                    method="post"
+                                    action="{% url 'cart_remove' item.pk %}"
+                                >
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="remove-button"
+                                    >
+                                        Удалить из корзины
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="item-total">
+                                {{ item.total|floatformat:2 }}
+                                <span>сомони</span>
+                            </div>
+
+                        </article>
+                    {% endfor %}
+                </section>
+
+                <section class="checkout">
+                    <h2>Оформить заказ</h2>
+
+                    <p>
+                        Все поля, кроме комментария, обязательны.
+                        Дата доставки — твоё пожелание.
+                    </p>
+
+                    <form
+                        method="post"
+                        action="{% url 'order_create' %}"
+                    >
+                        {% csrf_token %}
+
+                        <div class="field">
+                            <label for="full_name">Имя и фамилия</label>
+                            <input
+                                id="full_name"
+                                name="full_name"
+                                type="text"
+                                maxlength="150"
+                                autocomplete="name"
+                                placeholder="Введи имя и фамилию"
+                                required
+                            >
+                        </div>
+
+                        <div class="field">
+                            <label for="phone">Телефон</label>
+                            <input
+                                id="phone"
+                                name="phone"
+                                type="tel"
+                                maxlength="30"
+                                autocomplete="tel"
+                                placeholder="+992 ..."
+                                required
+                            >
+                        </div>
+
+                        <div class="field">
+                            <label for="address">Адрес доставки</label>
+                            <input
+                                id="address"
+                                name="address"
+                                type="text"
+                                maxlength="300"
+                                autocomplete="street-address"
+                                placeholder="Город, улица, дом, квартира"
+                                required
+                            >
+                        </div>
+
+                        <div class="field">
+                            <label for="delivery_date">
+                                Желаемая дата доставки
+                            </label>
+                            <input
+                                id="delivery_date"
+                                name="delivery_date"
+                                type="date"
+                                min="{% now 'Y-m-d' %}"
+                                required
+                            >
+                        </div>
+
+                        <div class="field">
+                            <label for="description">
+                                Комментарий — необязательно
+                            </label>
+                            <textarea
+                                id="description"
+                                name="description"
+                                placeholder="Например: позвонить перед доставкой"
+                            ></textarea>
+                        </div>
+
+                        <div class="total">
+                            <small>Стоимость товаров</small>
+                            <strong>
+                                {{ total|floatformat:2 }} сомони
+                            </strong>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="button order-button"
+                        >
+                            Заказать →
+                        </button>
+                    </form>
+                </section>
+
+            </div>
+
+        {% else %}
+            <div class="empty">
+                <h2>Корзина пустая</h2>
+                <p>Добавь товары, чтобы оформить заказ.</p>
+
+                <a href="{% url 'home' %}#products" class="button">
+                    Смотреть товары →
+                </a>
+            </div>
+        {% endif %}
+
+    </main>
+
+</body>
+</html>

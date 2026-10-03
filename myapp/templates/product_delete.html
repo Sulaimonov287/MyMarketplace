@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Удалить товар · Avero Market</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 25px 16px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #291e38;
+            background:
+                radial-gradient(circle at 10% 10%, #eadfff, transparent 45%),
+                #f7f6fb;
+        }
+
+        .panel {
+            width: 100%;
+            max-width: 490px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid #ece5f5;
+            border-radius: 26px;
+            background: white;
+            box-shadow: 0 25px 65px #54318210;
+        }
+
+        .icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 24px;
+            display: grid;
+            place-items: center;
+            border-radius: 22px;
+            background: #fff0f4;
+            color: #cf4770;
+            font-size: 35px;
+        }
+
+        h1 {
+            font-size: 29px;
+            letter-spacing: -1px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #93859e;
+            font-size: 14px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .actions > * { flex: 1; }
+
+        .btn {
+            width: 100%;
+            min-height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border: 0;
+            border-radius: 12px;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .cancel { background: #f0ebfa; color: #7350cc; }
+        .delete { background: #ce436d; color: white; }
+
+        @media (max-width: 450px) {
+            .panel { padding: 30px 22px; }
+            .actions { flex-direction: column; }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="panel">
+        <div class="icon">×</div>
+
+        <h1>Удалить товар?</h1>
+
+        <p>
+            «{{ object.name }}» исчезнет из маркетплейса
+            и корзин покупателей. Отменить удаление нельзя.
+        </p>
+
+        <div class="actions">
+            <a class="btn cancel" href="{% url 'home' %}">
+                Отмена
+            </a>
+
+            <form method="post">
+                {% csrf_token %}
+                <button class="btn delete" type="submit">
+                    Да, удалить
+                </button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

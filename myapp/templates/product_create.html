@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить товар · Avero Market</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            padding: 35px 20px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #241b35;
+            background:
+                radial-gradient(circle at 0% 0%, #e8ddff, transparent 45%),
+                radial-gradient(circle at 100% 100%, #e2efff, transparent 40%),
+                #f7f6fb;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .wrapper { max-width: 700px; margin: auto; }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #857691;
+            font-size: 13px;
+        }
+
+        .panel {
+            padding: 38px;
+            border: 1px solid #eee7f5;
+            border-radius: 26px;
+            background: white;
+            box-shadow: 0 25px 70px #5431820d;
+        }
+
+        .eyebrow {
+            margin-bottom: 12px;
+            color: #8863db;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            margin-bottom: 13px;
+            font-size: 35px;
+            letter-spacing: -1.3px;
+        }
+
+        .description {
+            color: #92869e;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .field { margin-bottom: 22px; }
+
+        label {
+            display: block;
+            margin-bottom: 9px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #e5dfed;
+            border-radius: 12px;
+            outline: none;
+            background: #faf9fd;
+            font: inherit;
+            color: #30243d;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #9568ed;
+            box-shadow: 0 0 0 4px #9568ed0c;
+        }
+
+        textarea { min-height: 130px; resize: vertical; }
+
+        .errorlist {
+            list-style: none;
+            color: #c43a60;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: 0;
+            border-radius: 13px;
+            color: white;
+            background: linear-gradient(135deg, #8b60f3, #6540d3);
+            font: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .note {
+            color: #a095ac;
+            font-size: 12px;
+            line-height: 1.7;
+            margin-top: 18px;
+        }
+
+        @media (max-width: 550px) {
+            body { padding: 22px 15px; }
+            .panel { padding: 26px 22px; }
+            h1 { font-size: 29px; }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="wrapper">
+        <a class="back" href="{% url 'home' %}">
+            ← Вернуться в маркетплейс
+        </a>
+
+        <section class="panel">
+            <div class="eyebrow">ТВОЙ МАГАЗИН</div>
+            <h1>Добавим что-то новое.</h1>
+
+            <p class="description">
+                Загрузи фотографию, расскажи о товаре
+                и укажи его стоимость.
+            </p>
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {{ form.non_field_errors }}
+
+                {% for field in form %}
+                    <div class="field">
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+
+                <button class="btn" type="submit">
+                    Опубликовать товар →
+                </button>
+            </form>
+
+            <p class="note">
+                Если список категорий пуст, сначала добавь
+                категорию через Django Admin.
+            </p>
+        </section>
+    </main>
+</body>
+</html>

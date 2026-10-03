@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя корзина — Avero Market</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Inter", Arial, sans-serif;
+            color: #171721;
+            background:
+                radial-gradient(circle at 10% 10%, #6846ff1f, transparent 35%),
+                radial-gradient(circle at 90% 30%, #00c2ff19, transparent 35%),
+                #f6f7fb;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        a:focus-visible {
+            outline: 3px solid #b7a5ff;
+            outline-offset: 4px;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 20px 6%;
+            border-bottom: 1px solid #e9e7f0;
+            background: #ffffffd9;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 23px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .logo-icon {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #6c4cff, #9b63ff);
+            color: white;
+            box-shadow: 0 8px 22px #6c4cff35;
+        }
+
+        .logo span {
+            color: #7653ef;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 45px;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: #eee9ff;
+            color: #6846d7;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+        .button:hover {
+            background: #e3d9ff;
+            transform: translateY(-2px);
+        }
+
+        .button.primary {
+            background: linear-gradient(135deg, #7653ef, #9865ff);
+            color: white;
+            box-shadow: 0 8px 20px #7653ef25;
+        }
+
+        .page {
+            width: min(1200px, 88%);
+            margin: 45px auto 70px;
+        }
+
+        .heading {
+            margin-bottom: 30px;
+        }
+
+        .eyebrow {
+            margin-bottom: 10px;
+            color: #7653ef;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .heading h1 {
+            font-size: 40px;
+            letter-spacing: -1.8px;
+        }
+
+        .heading p {
+            margin-top: 12px;
+            color: #898895;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .message {
+            margin-bottom: 18px;
+            padding: 15px 18px;
+            border-radius: 14px;
+            background: #eee8ff;
+            color: #6541bc;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            align-items: start;
+            gap: 25px;
+        }
+
+        .items {
+            display: grid;
+            gap: 16px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            min-width: 0;
+            padding: 22px;
+            border: 1px solid #ece9f3;
+            border-radius: 23px;
+            background: white;
+            box-shadow: 0 10px 30px #231f4b08;
+        }
+
+        .product-image {
+            flex-shrink: 0;
+            width: 110px;
+            height: 110px;
+            overflow: hidden;
+            border-radius: 17px;
+            background: #f2eff9;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .placeholder {
+            display: grid;
+            place-items: center;
+            width: 100%;
+            height: 100%;
+            font-size: 38px;
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .category {
+            margin-bottom: 8px;
+            color: #8a70ef;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            overflow-wrap: anywhere;
+        }
+
+        .product-info h2 {
+            margin-bottom: 10px;
+            font-size: 17px;
+            overflow-wrap: anywhere;
+        }
+
+        .unit-price {
+            color: #8b8999;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .quantity {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 7px 10px;
+            border-radius: 9px;
+            background: #f1edff;
+            color: #7451d7;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .item-total {
+            max-width: 170px;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .item-total strong {
+            display: block;
+            font-size: 22px;
+            letter-spacing: -.7px;
+        }
+
+        .item-total span {
+            display: block;
+            margin-top: 5px;
+            color: #9995a6;
+            font-size: 11px;
+        }
+
+        .summary {
+            padding: 27px;
+            border: 1px solid #ece9f3;
+            border-radius: 25px;
+            background: white;
+            box-shadow: 0 15px 40px #231f4b08;
+        }
+
+        .summary h2 {
+            margin-bottom: 24px;
+            font-size: 21px;
+            letter-spacing: -.6px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding-bottom: 20px;
+            color: #8b8999;
+            font-size: 13px;
+        }
+
+        .summary-row strong {
+            color: #24212f;
+        }
+
+        .total-label {
+            padding-top: 22px;
+            border-top: 1px solid #eeebf5;
+            color: #8b8999;
+            font-size: 12px;
+        }
+
+        .total-price {
+            margin: 10px 0 25px;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -1.3px;
+            overflow-wrap: anywhere;
+        }
+
+        .total-price span {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: normal;
+            color: #918c9f;
+        }
+
+        .summary .button {
+            width: 100%;
+        }
+
+        .summary-note {
+            margin-top: 16px;
+            color: #918c9f;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .empty {
+            padding: 65px 25px;
+            border: 1px solid #ece9f3;
+            border-radius: 28px;
+            background: white;
+            text-align: center;
+        }
+
+        .empty-icon {
+            margin-bottom: 22px;
+            font-size: 65px;
+        }
+
+        .empty h2 {
+            margin-bottom: 12px;
+            font-size: 25px;
+            letter-spacing: -.7px;
+        }
+
+        .empty p {
+            max-width: 400px;
+            margin: 0 auto 25px;
+            color: #8b8999;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 850px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 16px 5%;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .page {
+                width: 90%;
+                margin-top: 30px;
+            }
+
+            .heading h1 {
+                font-size: 32px;
+            }
+
+            .heading p {
+                font-size: 12px;
+            }
+
+            .cart-item {
+                flex-wrap: wrap;
+                gap: 14px;
+                padding: 16px;
+            }
+
+            .product-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .product-info h2 {
+                font-size: 14px;
+            }
+
+            .item-total {
+                width: 100%;
+                max-width: none;
+                padding-top: 13px;
+                border-top: 1px solid #f0edf6;
+                text-align: left;
+            }
+
+            .item-total strong {
+                font-size: 20px;
+            }
+
+            .summary {
+                padding: 22px;
+            }
+
+            .button {
+                font-size: 12px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="{% url 'home' %}" class="logo">
+            <div class="logo-icon">A</div>
+            <div>Avero <span>Market</span></div>
+        </a>
+
+        <a href="{% url 'home' %}#products" class="button">
+            ← Продолжить покупки
+        </a>
+    </header>
+
+    <main class="page">
+
+        {% for message in messages %}
+            <div class="message" role="status">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="heading">
+            <div class="eyebrow">AVERO MARKET</div>
+            <h1>Моя корзина 🛒</h1>
+            <p>Твои выбранные товары и общая сумма.</p>
+        </div>
+
+        {% if items %}
+            <div class="layout">
+
+                <div class="items">
+                    {% for item in items %}
+                        <article class="cart-item">
+
+                            <div class="product-image">
+                                {% if item.product.image %}
+                                    <img
+                                        src="{{ item.product.image.url }}"
+                                        alt="{{ item.product.name }}"
+                                    >
+                                {% else %}
+                                    <div class="placeholder">📦</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="product-info">
+                                <div class="category">
+                                    {{ item.product.category.name }}
+                                </div>
+
+                                <h2>{{ item.product.name }}</h2>
+
+                                <p class="unit-price">
+                                    {{ item.product.price }} сомони за штуку
+                                </p>
+
+                                <div class="quantity">
+                                    Количество: {{ item.quantity }} шт.
+                                </div>
+                            </div>
+
+                            <div class="item-total">
+                                <strong>{{ item.total|floatformat:2 }}</strong>
+                                <span>сомони</span>
+                            </div>
+
+                        </article>
+                    {% endfor %}
+                </div>
+
+                <aside class="summary">
+                    <h2>Сумма корзины</h2>
+
+                    <div class="summary-row">
+                        <span>Позиций в корзине</span>
+                        <strong>{{ items|length }}</strong>
+                    </div>
+
+                    <div class="total-label">Стоимость товаров</div>
+
+                    <div class="total-price">
+                        {{ total|floatformat:2 }}
+                        <span>сомони</span>
+                    </div>
+
+                    <a
+                        href="{% url 'home' %}#products"
+                        class="button primary"
+                    >
+                        + Добавить ещё товары
+                    </a>
+
+                    <p class="summary-note">
+                        Оформление заказа пока не подключено.
+                    </p>
+                </aside>
+
+            </div>
+
+        {% else %}
+            <div class="empty">
+                <div class="empty-icon">🛍️</div>
+
+                <h2>Корзина пока пустая</h2>
+
+                <p>
+                    Выбери товар в каталоге и нажми
+                    «В корзину», чтобы он появился здесь.
+                </p>
+
+                <a
+                    href="{% url 'home' %}#products"
+                    class="button primary"
+                >
+                    Перейти к товарам →
+                </a>
+            </div>
+        {% endif %}
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход · Avero Market</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --purple: #7652ef;
+            --ink: #211b32;
+            --muted: #8b829a;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(ellipse at 0% 0%, #e8dfff, transparent 45%),
+                radial-gradient(ellipse at 100% 90%, #e2f0ff, transparent 40%),
+                #f7f6fb;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button, input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a:focus-visible, button:focus-visible {
+            outline: 3px solid #b6a2fa;
+            outline-offset: 4px;
+        }
+
+        .header {
+            max-width: 1260px;
+            margin: auto;
+            padding: 26px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -.9px;
+        }
+
+        .logo-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            color: white;
+            background: linear-gradient(135deg, #956aff, #6540d8);
+            box-shadow: 0 8px 22px #7750ee30;
+        }
+
+        .back {
+            font-size: 13px;
+            color: #8e859d;
+            transition: .2s;
+        }
+
+        .back:hover {
+            color: var(--purple);
+        }
+
+        .shell {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: min(1060px, calc(100% - 40px));
+            margin: 30px auto 45px;
+            border: 1px solid #ffffff;
+            border-radius: 32px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow:
+                0 35px 100px #4d2c8610,
+                0 5px 20px #4d2c8605;
+        }
+
+        .visual {
+            position: relative;
+            min-height: 660px;
+            padding: 43px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 34px;
+            overflow: hidden;
+            color: white;
+            background:
+                radial-gradient(ellipse at 100% 0%, #bd97ff, transparent 55%),
+                radial-gradient(ellipse at 0% 100%, #367be6, transparent 55%),
+                linear-gradient(150deg, #331863, #7650dc);
+        }
+
+        .visual::before, .visual::after {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border: 1px solid #ffffff18;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .visual::before {
+            right: -200px;
+            top: 140px;
+            box-shadow: 0 0 0 50px #ffffff04;
+        }
+
+        .visual::after {
+            left: -200px;
+            bottom: -250px;
+            box-shadow: 0 0 0 60px #ffffff04;
+        }
+
+        .visual > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .visual-tag {
+            width: fit-content;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 13px;
+            border: 1px solid #ffffff30;
+            border-radius: 30px;
+            background: #ffffff0c;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.4px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background: #d8c4ff;
+            border-radius: 50%;
+        }
+
+        .visual h2 {
+            font-size: clamp(36px, 4vw, 49px);
+            line-height: 1.08;
+            font-weight: 750;
+            letter-spacing: -2px;
+        }
+
+        .visual h2 span {
+            color: #dac8ff;
+        }
+
+        .visual-description {
+            max-width: 330px;
+            color: #e0d3f8;
+            font-size: 13px;
+            line-height: 1.9;
+            margin-top: 19px;
+        }
+
+        .showcase {
+            position: relative;
+            padding: 18px 10px;
+        }
+
+        .shopping-card {
+            width: 100%;
+            max-width: 330px;
+            margin: auto;
+            padding: 22px;
+            border: 1px solid #ffffff45;
+            border-radius: 23px;
+            background: linear-gradient(135deg, #ffffff27, #ffffff10);
+            backdrop-filter: blur(15px);
+            transform: rotate(-6deg);
+            box-shadow: 0 25px 45px #25115320;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: #eee3ff;
+        }
+
+        .card-symbol {
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: #ffffff20;
+            font-size: 23px;
+        }
+
+        .card-items {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 19px;
+        }
+
+        .mini-item {
+            flex: 1;
+            height: 77px;
+            display: grid;
+            place-items: center;
+            border: 1px solid #ffffff20;
+            border-radius: 15px;
+            background: #ffffff13;
+            font-size: 30px;
+        }
+
+        .shopping-card strong {
+            display: block;
+            font-size: 23px;
+            font-weight: 650;
+            letter-spacing: -.6px;
+        }
+
+        .shopping-card p {
+            margin-top: 7px;
+            font-size: 11px;
+            color: #e2d5fb;
+        }
+
+        .floating-label {
+            position: absolute;
+            right: -3px;
+            bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 17px;
+            border-radius: 16px;
+            background: #ffffff;
+            color: #5d3cbd;
+            box-shadow: 0 15px 30px #27125020;
+            transform: rotate(4deg);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .visual-footer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #d7c8ee;
+            font-size: 11px;
+        }
+
+        .visual-footer span {
+            width: 26px;
+            height: 1px;
+            background: #c1a9e7;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 50px;
+        }
+
+        .eyebrow {
+            font-size: 10px;
+            color: #947bd1;
+            font-weight: 800;
+            letter-spacing: 2.2px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 39px;
+            line-height: 1.12;
+            letter-spacing: -1.8px;
+            margin-bottom: 17px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        form {
+            margin-top: 32px;
+        }
+
+        .field {
+            margin-bottom: 22px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 9px;
+            color: #554b65;
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .field input {
+            width: 100%;
+            min-width: 0;
+            height: 51px;
+            padding: 0 16px;
+            border: 1px solid #e7e1ee;
+            border-radius: 13px;
+            background: #faf9fd;
+            color: var(--ink);
+            outline: none;
+            transition: .2s;
+        }
+
+        .password-wrap input {
+            padding-right: 86px;
+        }
+
+        .field input:focus {
+            border-color: #9977ed;
+            background: white;
+            box-shadow: 0 0 0 4px #8b61e80c;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 0;
+            padding: 5px 2px;
+            background: transparent;
+            color: #9687ae;
+            font-size: 10px;
+        }
+
+        .password-toggle:hover {
+            color: var(--purple);
+        }
+
+        .errorlist {
+            list-style: none;
+            margin-top: 8px;
+            color: #be3b5b;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .form-errors {
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            background: #fff2f5;
+            border: 1px solid #f6d6df;
+            border-radius: 12px;
+        }
+
+        .form-errors .errorlist {
+            margin-top: 0;
+        }
+
+        .submit {
+            width: 100%;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            border: 0;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #8a60f4, #6440d4);
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 9px 22px #7750ee20;
+            transition: .2s;
+        }
+
+        .submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 13px 28px #7750ee30;
+        }
+
+        .submit span:last-child {
+            font-size: 20px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin: 28px 0 22px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: #b0a5bf;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #eee8f4;
+        }
+
+        .bottom-link {
+            text-align: center;
+            color: #94899f;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .bottom-link a {
+            color: #7750dd;
+            font-weight: 700;
+            margin-left: 4px;
+        }
+
+        .bottom-link a:hover {
+            text-decoration: underline;
+        }
+
+        .page-footer {
+            padding: 0 20px 28px;
+            text-align: center;
+            font-size: 11px;
+            color: #aaa0b7;
+        }
+
+        @media (max-width: 900px) {
+            .visual, .content {
+                padding: 34px;
+            }
+
+            .visual h2 {
+                font-size: 38px;
+            }
+
+            h1 {
+                font-size: 34px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .header {
+                padding: 20px;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .logo-icon {
+                width: 37px;
+                height: 37px;
+                border-radius: 12px;
+            }
+
+            .back {
+                font-size: 11px;
+            }
+
+            .shell {
+                grid-template-columns: 1fr;
+                width: calc(100% - 30px);
+                margin: 10px auto 28px;
+                border-radius: 25px;
+            }
+
+            .visual {
+                min-height: auto;
+                padding: 28px;
+                gap: 22px;
+            }
+
+            .visual h2 {
+                font-size: 33px;
+                letter-spacing: -1.4px;
+            }
+
+            .visual-description {
+                margin-top: 13px;
+                font-size: 12px;
+            }
+
+            .showcase, .visual-footer {
+                display: none;
+            }
+
+            .content {
+                padding: 32px 26px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            form {
+                margin-top: 25px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <a class="logo" href="{% url 'home' %}">
+            <span class="logo-icon">A</span>
+            <span>Avero Market</span>
+        </a>
+
+        <a class="back" href="{% url 'home' %}">
+            В маркетплейс ↗
+        </a>
+    </header>
+
+    <main class="shell">
+        <aside class="visual">
+            <div class="visual-tag">
+                <span class="dot"></span>
+                YOUR EVERYDAY FINDS
+            </div>
+
+            <div>
+                <h2>
+                    Хорошие вещи.<br>
+                    <span>Твои вещи.</span><br>
+                    В одном месте.
+                </h2>
+
+                <p class="visual-description">
+                    Возвращайся к любимым находкам
+                    и открывай что-то новое каждый день.
+                </p>
+            </div>
+
+            <div class="showcase" aria-hidden="true">
+                <div class="shopping-card">
+                    <div class="card-top">
+                        <span>AVERO SELECTION</span>
+                        <span class="card-symbol">♡</span>
+                    </div>
+
+                    <div class="card-items">
+                        <div class="mini-item">🎧</div>
+                        <div class="mini-item">👟</div>
+                        <div class="mini-item">⌚</div>
+                    </div>
+
+                    <strong>Что-то особенное.</strong>
+                    <p>Твоя следующая любимая находка.</p>
+                </div>
+
+                <div class="floating-label">
+                    <span>✦</span>
+                    Находи. Выбирай. Вдохновляйся.
+                </div>
+            </div>
+
+            <div class="visual-footer">
+                <span></span>
+                Маленькие покупки. Большие эмоции.
+            </div>
+        </aside>
+
+        <section class="content">
+            <div class="eyebrow">WELCOME BACK</div>
+
+            <h1>
+                Снова вместе.<br>
+                Снова Avero.
+            </h1>
+
+            <p class="subtitle">
+                Войди в аккаунт, чтобы продолжить<br>
+                с того места, где остановился.
+            </p>
+
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors" role="alert">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="field">
+                        <label for="{{ field.id_for_label }}">
+                            {% if field.name == 'username' %}
+                                Имя пользователя
+                            {% elif field.name == 'password' %}
+                                Пароль
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                        </label>
+
+                        <div class="input-wrap {% if field.name == 'password' %}password-wrap{% endif %}">
+                            {{ field }}
+
+                            {% if field.name == 'password' %}
+                                <button
+                                    class="password-toggle"
+                                    type="button"
+                                    aria-controls="{{ field.id_for_label }}"
+                                    aria-pressed="false"
+                                >
+                                    Показать
+                                </button>
+                            {% endif %}
+                        </div>
+
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+
+                <button class="submit" type="submit">
+                    <span>Войти в аккаунт</span>
+                    <span aria-hidden="true">→</span>
+                </button>
+            </form>
+
+            <div class="divider">ТВОЙ МАРКЕТПЛЕЙС</div>
+
+            <p class="bottom-link">
+                Ещё нет аккаунта?
+                <a href="{% url 'register' %}">Создать аккаунт</a>
+            </p>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        Avero Market · Создан для твоих находок
+    </footer>
+
+    <script>
+        document.querySelectorAll('.password-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const input = document.getElementById(
+                    button.getAttribute('aria-controls')
+                );
+
+                const show = input.type === 'password';
+
+                input.type = show ? 'text' : 'password';
+                button.textContent = show ? 'Скрыть' : 'Показать';
+                button.setAttribute('aria-pressed', String(show));
+            });
+        });
+
+        const username = document.querySelector('input[name="username"]');
+        const password = document.querySelector('input[name="password"]');
+
+        if (username) {
+            username.placeholder = 'Твоё имя пользователя';
+            username.autocomplete = 'username';
+        }
+
+        if (password) {
+            password.placeholder = 'Твой пароль';
+            password.autocomplete = 'current-password';
+        }
+    </script>
+</body>
+</html>
